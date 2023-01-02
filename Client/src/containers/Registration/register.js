@@ -64,6 +64,7 @@ const Register = () => {
                     confirmPassword: '',
                     phoneNumber: '',
                     address: '',
+                    userRole: '',
                     country: '',
                     zipCode: ''
                 }}
@@ -95,6 +96,12 @@ const Register = () => {
 
                             <Field name="address" type="text" placeholder="Your Address" value={values.address} onChange={handleChange} onBlur={handleBlur} />
                             {errors.address && touched.address ? (<div className="error">{errors.address}</div>) : null}
+
+                            <select name="userRole" type="text" value={values.userRole} onChange={handleChange} onBlur={handleBlur}>
+                                <option value="" disabled="disabled" label="Select a Role"></option>
+                                <option value="user" >user</option>
+                                <option value="admin" >admin</option>
+                            </select>
 
                             <select name="country" type="text" value={values.country} onChange={handleChange} onBlur={handleBlur}>
                                 <option value="" disabled="disabled" label="Select a Country"></option>

@@ -3,6 +3,8 @@ import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useDispatch, useSelector } from 'react-redux'
+import {setUserDetails}  from "../../reducers/userSlice"
 
 const loginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -10,8 +12,10 @@ const loginSchema = Yup.object().shape({
 });
 
 const Login = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate() 
+    const dispatch = useDispatch()
 
+    const {fullName, userRole} = useSelector(state => state.user)
     const [message, setMessage] = useState('')
 
     const loginUser = async (values, resetForm) => {
@@ -26,7 +30,7 @@ const Login = () => {
 
         if (data.msg) {
             alert('login success')
-            navigate('/home')
+            dispatch(setUserDetails(data.userDetails))
         }else{
             setMessage(data.errMsg)
         }
@@ -49,6 +53,7 @@ const Login = () => {
                     <div className='auth'>
                         <Form onSubmit={handleSubmit}>
                             <h1>Login</h1>
+                            <h6> my name is {fullName} and the role is {userRole}</h6>
                             <Field name="email" type="email" placeholder="Enter Email" value={values.email} onChange={handleChange} onBlur={handleBlur} />
                             {errors.email && touched.email ? (<div className="error">{errors.email}</div>) : null}
 

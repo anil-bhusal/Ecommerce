@@ -7,11 +7,13 @@ app.post('/login', async(req, res) => {
     try{
     const data = await Users.findOne({email: req.body.email})
     if(data){
-        const {password} = data
-        const isValidPassword = bcrypt.compareSync(req.body.password, password); 
+        const dbPassword = data.password
+        const isValidPassword = bcrypt.compareSync(req.body.password, dbPassword); 
+        const {_id, password, __v, ...refactoredData} = data.toObject()
         if(isValidPassword){
             res.json({
-                msg: "login success"
+                msg: "login success",
+                userDetails: refactoredData
             })
         }else{
             res.json({
