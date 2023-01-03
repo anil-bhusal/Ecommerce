@@ -7,6 +7,7 @@ import UserDashboard from "./containers/user/dashboard"
 import AdminDashboard from "./containers/admin/dashboard"
 import AddItem from "./containers/admin/addItem"
 import { useDispatch, useSelector } from 'react-redux'
+import ItemList from "./containers/admin/itemList";
 
 function App() {
 
@@ -51,6 +52,7 @@ const AdminScreen = () => {
     <Routes>
       <Route exact path='/' element={<AdminDashboard/>} />
       <Route exact path='/additem' element = { <AddItem/>}/>
+      <Route exact path='/itemlist' element = { <ItemList/>}/>
     </Routes>
   );
 }
