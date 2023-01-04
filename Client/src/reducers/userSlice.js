@@ -15,10 +15,14 @@ const userSlice = createSlice({
         state.fullName =fullName
         state.userRole =userRole
     },
+    setUserDetailsNull: (state, actions) => {
+      state.fullName = ''
+      state.userRole = ''
+    }
   }
 });
 
-export const { setUserDetails } = userSlice.actions;
+export const { setUserDetails, setUserDetailsNull } = userSlice.actions;
 export default userSlice.reducer;
 
 
