@@ -1,12 +1,12 @@
 import React from "react";
 import { useNavigate, Link } from 'react-router-dom';
-import AdminNav from "../../components/adminNav";
+import AdminNav from "../../components/navigation";
 
 function Dashboard() {
 
   return (
     <>
-      <AdminNav/>
+     
     </>
   );
 }
