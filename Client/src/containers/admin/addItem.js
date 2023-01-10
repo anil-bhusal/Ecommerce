@@ -13,31 +13,31 @@ const itemSchema = Yup.object().shape({
   quantity: Yup.string().required('Required'),
 });
 
-const AddItem = () => {
+const AddItem = (props) => {
   const navigate = useNavigate()
   const { name } = useSelector(state => state.user)
 
   const orderItem = async (values) => {
     values.senderName = name
     const requestOptions = {
-      method: "POST",
+      method: props.name ? "PUT" : "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values)
     };
 
     const response = await fetch('http://localhost:4000/items', requestOptions);
     const data = await response.json()
+    props.fetchData()
 
     if (data) {
       alert(data.msg)
-      navigate('/')
     }
   }
 
   return (
     <div className='App'>
       <Formik
-        initialValues={{
+        initialValues={props.name ? props.fillForm : {
           name: '',
           brand: '',
           itemType: '',
@@ -48,6 +48,7 @@ const AddItem = () => {
         validationSchema={itemSchema}
         onSubmit={(values, { resetForm }) => {
           orderItem(values)
+          resetForm()
         }}
       >
         {({ errors, touched, values, handleChange, handleBlur, handleSubmit }) => (
@@ -81,7 +82,7 @@ const AddItem = () => {
               <Field name="quantity" type="number" placeholder="item quantity" value={values.quantity} onChange={handleChange} onBlur={handleBlur} />
               {errors.quantity && touched.quantity ? (<div className="error">{errors.quantity}</div>) : null}
 
-              <button className='btn btn-success' type="submit">Add Item</button>
+              <button className='btn btn-success' type="submit">{props.name ? "Edit Item" : "Add Item"}</button>
             </Form>
           </div>
         )}

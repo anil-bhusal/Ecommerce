@@ -33,4 +33,40 @@ app.get('/items', async (req, res) => {
     }
 })
 
+app.put('/items', async (req, res) => {
+    try {
+        const data = await Items.findByIdAndUpdate(req.body._id, req.body)
+        if(data){
+            res.json({
+                msg: "Item updated successfully"
+            })
+        }else{
+            res.json({
+                errMsg: "something went wrong"
+            })
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+})
+
+app.delete('/items', async (req, res) => {
+    try {
+        const data = await Items.findByIdAndRemove(req.body.id)
+        if(data){
+            res.json({
+                msg: "deleted successfully"
+            })
+        }else{
+            res.json({
+                errMsg: "something went wrong"
+            })
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+})
+
 module.exports = app;

@@ -23,10 +23,10 @@ const ItemList = ()=>{
         <section>
             <div className='container'>
                 <div className='orderList'>
-                    <h1 className='title'><i><FontAwesomeIcon icon={faDolly}/></i> &nbsp; Item List</h1>
+                    <h1 className='title'><i><FontAwesomeIcon icon={faDolly}/></i> &nbsp; Item List</h1><br/>
                     {itemList.length > 0 ? itemList.map((item, id)=>{
                         return(
-                            <Box item={item}/>
+                            <Box item={item} fetchData={fetchData}/>
                             )
                     }): 'list not found'}
                 </div>

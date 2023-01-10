@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
 
-function Dashboard() {
+function ItemDetails() {
   const [itemList, setItemList] = useState([])
 
   const fetchData = async () => {
@@ -44,4 +44,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default ItemDetails;
