@@ -1,9 +1,15 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
+import ItemList from '../admin/itemList'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { setItemDetails } from '../../reducers/itemSlice'
 
-function Dashboard() {
+const Dashboard = () => {
   const [itemList, setItemList] = useState([])
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const fetchData = async () => {
     const response = await fetch("http://localhost:4000/items")
@@ -18,6 +24,12 @@ function Dashboard() {
     fetchData()
   }, [])
 
+  const sendItem = (item) => {
+    console.log(item)
+    navigate('/itemdetails')
+    dispatch(setItemDetails(item))
+  }
+
   return (
     <>
       <section>
@@ -26,7 +38,7 @@ function Dashboard() {
             <h1 className='title'><i><FontAwesomeIcon icon={faDolly} /></i> &nbsp; Item List</h1><br />
             {itemList.length > 0 ? itemList.map((item, id) => {
               return (
-                <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
+                <div class="card" onClick={() => { sendItem(item) }} style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                   <div class="card-body" style={{ marginLeft: '40px' }}>
                     <h5 class="card-title">Item Name: {item.name}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">{item.brand}</h6>

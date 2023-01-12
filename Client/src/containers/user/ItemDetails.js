@@ -1,12 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from 'react-redux'
 
-function ItemDetails() {
+const ItemDetails = () => {
   const [itemList, setItemList] = useState([])
+  const { _id } = useSelector(state => state.item)
 
   const fetchData = async () => {
-    const response = await fetch("http://localhost:4000/items")
+    const response = await fetch(`http://localhost:4000/items/${_id}`)
     const data = await response.json()
 
     if (data) {
@@ -21,9 +23,9 @@ function ItemDetails() {
   return (
     <>
       <section>
+        <br /><br /><br /><br /><br /><br /><br /><br />
         <div className='container'>
           <div className='orderList'>
-            <h1 className='title'><i><FontAwesomeIcon icon={faDolly} /></i> &nbsp; Item List</h1><br />
             {itemList.length > 0 ? itemList.map((item, id) => {
               return (
                 <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
@@ -34,6 +36,7 @@ function ItemDetails() {
                     <p class="card-text">Brand: {item.brand}</p>
                     <p class="card-text">Size: {item.size}</p>
                   </div>
+                  <button>add to cart</button>
                 </div>
               )
             }) : 'list not found'}
