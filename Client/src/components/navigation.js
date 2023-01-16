@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-import '../components/style/adminNav.css'
+import '../components/style/navigation.css'
 import { useDispatch, useSelector } from "react-redux"
 import { setUserDetailsNull } from '../reducers/userSlice'
 import { useNavigate, Link } from 'react-router-dom';
@@ -11,8 +11,12 @@ import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons"
 
 
 const Navigation = () => {
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    const [cartItem, setCartItem] = useState(0)
+
     const { fullName, userRole } = useSelector(state => state.user)
 
     const [open, setOpen] = useState(false);
@@ -52,7 +56,7 @@ const Navigation = () => {
             {userRole ?
                 <div>
                     {userRole === 'admin' ? (
-                        <nav class="navbar" >
+                        <nav class="navbar" id="navbar">
                             <div class="navbar-container container">
                                 <input type="checkbox" name="" id="" />
                                 <div class="hamburger-lines">
@@ -78,9 +82,9 @@ const Navigation = () => {
                             </div>
                         </nav>
                     ) : null}
-                    
+
                     {userRole === 'user' ? (
-                        <nav class="navbar">
+                        <nav class="navbar" id="navbar">
                             <div class="navbar-container container">
                                 <input type="checkbox" name="" id="" />
                                 <div class="hamburger-lines">
@@ -89,7 +93,8 @@ const Navigation = () => {
                                     <span class="line line3"></span>
                                 </div>
                                 <ul class="menu-items">
-                                <ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} />
+                                    <span style={{ marginTop: '-6px', fontSize: '15px', color: 'red', fontWeight: 'bold' }}>{cartItem}</span>
+                                    <ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} />
                                     &nbsp; &nbsp; &nbsp; &nbsp;
                                     <Avatar style={{ backgroundColor: '#87d068', }} icon={<UserOutlined />} /> &nbsp;
                                     <Dropdown menu={{ items }}>
@@ -98,7 +103,11 @@ const Navigation = () => {
                                         </a>
                                     </Dropdown>
                                 </ul>
+
                                 <h1 class="logo">Amazon Lite</h1>
+                                <form className='search'>
+                                    <input type="search" placeholder='search' className='form-control'></input>
+                                </form>
                             </div>
                         </nav>
                     ) : null}

@@ -36,19 +36,23 @@ const Dashboard = () => {
         <div className='container'>
           <div className='orderList'>
             <h1 className='title'><i><FontAwesomeIcon icon={faDolly} /></i> &nbsp; Item List</h1><br />
-            {itemList.length > 0 ? itemList.map((item, id) => {
-              return (
-                <div class="card" onClick={() => { sendItem(item) }} style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
-                  <div class="card-body" style={{ marginLeft: '40px' }}>
-                    <h5 class="card-title">Item Name: {item.name}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">{item.brand}</h6>
-                    <p class="card-text">Price: {item.price}</p>
-                    <p class="card-text">Brand: {item.brand}</p>
-                    <p class="card-text">Size: {item.size}</p>
+            <div className='row'>
+              {itemList.length > 0 ? itemList.map((item, id) => {
+                return (
+                  <div className='col-md-4'>
+                    <div class="card" onClick={() => { sendItem(item) }} style={{ height: '250px' ,marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
+                      <div class="card-body" style={{ marginLeft: '40px' }}>
+                        <h5 class="card-title">Item Name: {item.name}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{item.brand}</h6>
+                        <p class="card-text">Price: {item.price}</p>
+                        <p class="card-text">Brand: {item.brand}</p>
+                        <p class="card-text">Size: {item.size}</p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )
-            }) : 'list not found'}
+                )
+              }) : 'list not found'}
+            </div>
           </div>
         </div>
       </section>

@@ -53,7 +53,6 @@ const Login = () => {
                     <div className='auth'>
                         <Form onSubmit={handleSubmit}>
                             <h1>Login</h1>
-                            <h6> my name is {fullName} and the role is {userRole}</h6>
                             <Field name="email" type="email" placeholder="Enter Email" value={values.email} onChange={handleChange} onBlur={handleBlur} />
                             {errors.email && touched.email ? (<div className="error">{errors.email}</div>) : null}
 

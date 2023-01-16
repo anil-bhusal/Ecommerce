@@ -10,11 +10,13 @@ connect()
 const registerRouter = require('./routes/registerRouter');
 const loginRouter = require('./routes/loginRouter');
 const itemRoute = require('./routes/itemRoute');
+const cartRoute = require('./routes/cartRoute');
 
 
 app.use(registerRouter)
 app.use(loginRouter)
 app.use(itemRoute)
+app.use(cartRoute)
 
 
 app.listen(port, () => {

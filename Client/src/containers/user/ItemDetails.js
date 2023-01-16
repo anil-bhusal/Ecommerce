@@ -20,13 +20,25 @@ const ItemDetails = () => {
     fetchData()
   }, [])
 
+  const addToCart = async (values) => {
+    debugger
+    const requestOptions = {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(values)
+    };
+debugger
+    const response = await fetch('http://localhost:4000/cart', requestOptions);
+    const data = await response.json()
+  }
+
   return (
     <>
       <section>
-        <br /><br /><br /><br /><br /><br /><br /><br />
         <div className='container'>
           <div className='orderList'>
             {itemList.length > 0 ? itemList.map((item, id) => {
+              {debugger}
               return (
                 <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                   <div class="card-body" style={{ marginLeft: '40px' }}>
@@ -36,7 +48,7 @@ const ItemDetails = () => {
                     <p class="card-text">Brand: {item.brand}</p>
                     <p class="card-text">Size: {item.size}</p>
                   </div>
-                  <button>add to cart</button>
+                  <button onClick={(item) => addToCart(item)}>add to cart</button>
                 </div>
               )
             }) : 'list not found'}
