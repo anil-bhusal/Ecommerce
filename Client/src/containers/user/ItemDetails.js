@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux'
 
 const ItemDetails = () => {
   const [itemList, setItemList] = useState([])
+  const [cartItem, setCartItem] = useState(0)
+
   const { _id } = useSelector(state => state.item)
 
   const fetchData = async () => {
@@ -21,15 +23,20 @@ const ItemDetails = () => {
   }, [])
 
   const addToCart = async (values) => {
+    console.log(values)
     debugger
     const requestOptions = {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(values)
     };
-debugger
+    debugger
     const response = await fetch('http://localhost:4000/cart', requestOptions);
     const data = await response.json()
+    if(data){
+      alert(data.msg)
+    }
+    setCartItem(data.itemInCart)
   }
 
   return (
@@ -38,7 +45,7 @@ debugger
         <div className='container'>
           <div className='orderList'>
             {itemList.length > 0 ? itemList.map((item, id) => {
-              {debugger}
+              const {_id, ...data} = item
               return (
                 <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                   <div class="card-body" style={{ marginLeft: '40px' }}>
@@ -48,7 +55,7 @@ debugger
                     <p class="card-text">Brand: {item.brand}</p>
                     <p class="card-text">Size: {item.size}</p>
                   </div>
-                  <button onClick={(item) => addToCart(item)}>add to cart</button>
+                  <button onClick={() => addToCart(data)}>add to cart</button>
                 </div>
               )
             }) : 'list not found'}

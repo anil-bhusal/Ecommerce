@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import '../components/style/navigation.css'
@@ -51,6 +51,18 @@ const Navigation = () => {
         navigate("/");
     };
 
+    const itemInCart = async() => {
+        const response = await fetch(`http://localhost:4000/cart`)
+        const data = await response.json()
+        if (data) {
+            setCartItem(data.itemInCart)
+        }
+    }
+
+    useEffect( () => {
+        itemInCart()
+    }, [itemInCart])
+
     return (
         <>
             {userRole ?
@@ -78,7 +90,7 @@ const Navigation = () => {
                                         <p><Link to="/">Dashboard</Link></p>
                                     </Drawer>
                                 </ul>
-                                <h1 class="logo">Amazon Lite</h1>
+                                <h1 class="logo"><Link to ="/">Amazon Lite</Link></h1>
                             </div>
                         </nav>
                     ) : null}
@@ -94,8 +106,7 @@ const Navigation = () => {
                                 </div>
                                 <ul class="menu-items">
                                     <span style={{ marginTop: '-6px', fontSize: '15px', color: 'red', fontWeight: 'bold' }}>{cartItem}</span>
-                                    <ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} />
-                                    &nbsp; &nbsp; &nbsp; &nbsp;
+                                    <Link to ="/cartdetails"><ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} /></Link>                                    &nbsp; &nbsp; &nbsp; &nbsp;
                                     <Avatar style={{ backgroundColor: '#87d068', }} icon={<UserOutlined />} /> &nbsp;
                                     <Dropdown menu={{ items }}>
                                         <a onClick={(e) => e.preventDefault()}>
@@ -104,7 +115,7 @@ const Navigation = () => {
                                     </Dropdown>
                                 </ul>
 
-                                <h1 class="logo">Amazon Lite</h1>
+                                <h1 class="logo"><Link to ="/">Amazon Lite</Link></h1>
                                 <form className='search'>
                                     <input type="search" placeholder='search' className='form-control'></input>
                                 </form>
