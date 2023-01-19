@@ -14,6 +14,7 @@ const Navigation = () => {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [cartDetails, setCartDetails] = useState(false)
 
     const [cartItem, setCartItem] = useState(0)
 
@@ -54,6 +55,9 @@ const Navigation = () => {
     const itemInCart = async() => {
         const response = await fetch(`http://localhost:4000/cart`)
         const data = await response.json()
+        if(data.status === 200){
+            setCartDetails(true)
+        }
         if (data) {
             setCartItem(data.itemInCart)
         }
@@ -61,7 +65,7 @@ const Navigation = () => {
 
     useEffect( () => {
         itemInCart()
-    }, [itemInCart])
+    }, [cartDetails])
 
     return (
         <>
