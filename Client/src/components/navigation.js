@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Image, Button, Drawer } from 'antd';
 import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons"
-
+import {cartHandler} from '../utils/cartHandler'
 
 const Navigation = () => {
 
@@ -53,11 +53,9 @@ const Navigation = () => {
     };
 
     const itemInCart = async() => {
-        const response = await fetch(`http://localhost:4000/cart`)
-        const data = await response.json()
-        if(data.status === 200){
-            setCartDetails(true)
-        }
+       const data = await cartHandler()
+       debugger;
+
         if (data) {
             setCartItem(data.itemInCart)
         }
@@ -65,7 +63,7 @@ const Navigation = () => {
 
     useEffect( () => {
         itemInCart()
-    }, [cartDetails])
+    }, [])
 
     return (
         <>

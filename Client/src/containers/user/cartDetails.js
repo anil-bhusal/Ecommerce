@@ -19,6 +19,7 @@ const CartDetails = () => {
 
         const uniqueCartItem = []
         const noOfSameItemInCart = []
+        debugger
         cartInfo.map((item, id) => {
             if (!uniqueCartItem.includes(item.name)) {
                 uniqueCartItem.push(item.name)

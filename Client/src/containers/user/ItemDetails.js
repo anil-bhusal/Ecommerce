@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
+import { cartHandler } from '../../utils/cartHandler'
 import { useSelector } from 'react-redux'
 
 const ItemDetails = () => {
@@ -23,6 +24,7 @@ const ItemDetails = () => {
   }, [])
 
   const addToCart = async (values) => {
+    // cartHandler(values)
     console.log(values)
     debugger
     const requestOptions = {
@@ -33,10 +35,17 @@ const ItemDetails = () => {
     debugger
     const response = await fetch('http://localhost:4000/cart', requestOptions);
     const data = await response.json()
-    if(data){
+    if (data) {
       alert(data.msg)
     }
     setCartItem(data.itemInCart)
+
+    if (response.status == 200) {
+      setTimeout(() => {
+        cartHandler()
+      }, 3000);
+    }
+    window.location.reload(false)
   }
 
   return (
@@ -45,7 +54,7 @@ const ItemDetails = () => {
         <div className='container'>
           <div className='orderList'>
             {itemList.length > 0 ? itemList.map((item, id) => {
-              const {_id, ...data} = item
+              const { _id, ...data } = item
               return (
                 <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                   <div class="card-body" style={{ marginLeft: '40px' }}>
