@@ -6,9 +6,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { setUserDetailsNull } from '../reducers/userSlice'
 import { useNavigate, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Image, Button, Drawer } from 'antd';
+import { Avatar, Image, Button, Drawer, message } from 'antd';
 import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons"
-
+import io from 'socket.io-client';
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const Navigation = () => {
 
@@ -52,10 +53,10 @@ const Navigation = () => {
         navigate("/");
     };
 
-    const itemInCart = async() => {
+    const itemInCart = async () => {
         const response = await fetch(`http://localhost:4000/cart`)
         const data = await response.json()
-        if(data.status === 200){
+        if (data.status === 200) {
             setCartDetails(true)
         }
         if (data) {
@@ -63,9 +64,19 @@ const Navigation = () => {
         }
     }
 
-    useEffect( () => {
+    useEffect(() => {
         itemInCart()
-    }, [cartDetails])
+    }, [])
+
+    useEffect(() => {
+        socket.on('cartValues', (cartValues) => {
+            debugger
+            if (cartValues) {
+                const bcupCartItem = cartItem + 1;
+                setCartItem(bcupCartItem)
+            }
+        })
+    }, [socket, cartItem])
 
     return (
         <>
@@ -94,7 +105,7 @@ const Navigation = () => {
                                         <p><Link to="/">Dashboard</Link></p>
                                     </Drawer>
                                 </ul>
-                                <h1 class="logo"><Link to ="/">Amazon Lite</Link></h1>
+                                <h1 class="logo"><Link to="/">Amazon Lite</Link></h1>
                             </div>
                         </nav>
                     ) : null}
@@ -110,7 +121,7 @@ const Navigation = () => {
                                 </div>
                                 <ul class="menu-items">
                                     <span style={{ marginTop: '-6px', fontSize: '15px', color: 'red', fontWeight: 'bold' }}>{cartItem}</span>
-                                    <Link to ="/cartdetails"><ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} /></Link>                                    &nbsp; &nbsp; &nbsp; &nbsp;
+                                    <Link to="/cartdetails"><ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} /></Link>                                    &nbsp; &nbsp; &nbsp; &nbsp;
                                     <Avatar style={{ backgroundColor: '#87d068', }} icon={<UserOutlined />} /> &nbsp;
                                     <Dropdown menu={{ items }}>
                                         <a onClick={(e) => e.preventDefault()}>
@@ -119,7 +130,7 @@ const Navigation = () => {
                                     </Dropdown>
                                 </ul>
 
-                                <h1 class="logo"><Link to ="/">Amazon Lite</Link></h1>
+                                <h1 class="logo"><Link to="/">Amazon Lite</Link></h1>
                                 <form className='search'>
                                     <input type="search" placeholder='search' className='form-control'></input>
                                 </form>

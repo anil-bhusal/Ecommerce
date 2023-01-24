@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from 'react-redux'
+import { message } from 'antd';
+import io from 'socket.io-client';
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const ItemDetails = () => {
   const [itemList, setItemList] = useState([])
@@ -20,21 +23,25 @@ const ItemDetails = () => {
 
   useEffect(() => {
     fetchData()
+    socket.on('connect');
   }, [])
 
-  const addToCart = async (values) => {
-    console.log(values)
+
+  const addToCart = async (cartValues) => {
+    console.log(cartValues)
+   
+    socket.emit('requestCart', cartValues)
     debugger
     const requestOptions = {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values)
+      body: JSON.stringify(cartValues)
     };
     debugger
     const response = await fetch('http://localhost:4000/cart', requestOptions);
     const data = await response.json()
     if(data){
-      alert(data.msg)
+      message.success(data.msg)
     }
     setCartItem(data.itemInCart)
   }
