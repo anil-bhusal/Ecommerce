@@ -10,9 +10,14 @@ const Dashboard = () => {
   const [itemList, setItemList] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const { token } = useSelector(state => state.user)
 
   const fetchData = async () => {
-    const response = await fetch("http://localhost:4000/items")
+    const response = await fetch("http://localhost:4000/items", {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     const data = await response.json()
 
     if (data) {
@@ -40,7 +45,7 @@ const Dashboard = () => {
               {itemList.length > 0 ? itemList.map((item, id) => {
                 return (
                   <div className='col-md-4'>
-                    <div class="card" onClick={() => { sendItem(item) }} style={{ height: '250px' ,marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
+                    <div class="card" onClick={() => { sendItem(item) }} style={{ height: '250px', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                       <div class="card-body" style={{ marginLeft: '40px' }}>
                         <h5 class="card-title">Item Name: {item.name}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{item.brand}</h6>

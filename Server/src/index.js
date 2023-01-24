@@ -25,7 +25,7 @@ connect()
 // socket.on('requestCart' < try to relate with app.post('/requestCart')
 io.on('connection', (socket) => {
   socket.on('requestCart', (cartValues) => {
-    console.log("i am anil", cartValues)
+    // console.log("i am anil", cartValues)
     //send to other connected clients
     io.emit('cartValues', cartValues)
   });
