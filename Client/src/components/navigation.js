@@ -9,6 +9,8 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Image, Button, Drawer } from 'antd';
 import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons"
 import {cartHandler} from '../utils/cartHandler'
+import io from 'socket.io-client';
+const socket = io('http://localhost:4000');
 
 const Navigation = () => {
 
@@ -55,15 +57,25 @@ const Navigation = () => {
     const itemInCart = async() => {
        const data = await cartHandler()
        debugger;
-
         if (data) {
             setCartItem(data.itemInCart)
-        }
+        } 
+        socket.on('values', (values) => {
+            setCartItem(data.itemInCart)                
+        })   
     }
 
     useEffect( () => {
         itemInCart()
     }, [])
+
+    useEffect(() => {
+        if(cartItem.length > 0){
+            socket.on('values', (values) => {
+                
+            })
+        }
+    }, [socket])
 
     return (
         <>

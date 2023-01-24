@@ -30,6 +30,7 @@ app.get('/cart', async (req, res) => {
                 itemInCart: totalItemInCart
             })
         } else {
+  
             res.json({
                 msg: "something went wrong"
             })

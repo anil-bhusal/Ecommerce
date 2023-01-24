@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDolly } from '@fortawesome/free-solid-svg-icons'
 import { cartHandler } from '../../utils/cartHandler'
 import { useSelector } from 'react-redux'
+import io from 'socket.io-client';
+const socket = io(`http://localhost:4000`);
 
 const ItemDetails = () => {
   const [itemList, setItemList] = useState([])
@@ -23,14 +25,15 @@ const ItemDetails = () => {
     fetchData()
   }, [])
 
-  const addToCart = async (values) => {
-    // cartHandler(values)
-    console.log(values)
+  const addToCart = async (cartValues) => {
+    cartHandler(cartValues)
+    console.log(cartValues)
+    socket.emit('requestCart', cartValues)
     debugger
     const requestOptions = {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values)
+      body: JSON.stringify(cartValues)
     };
     debugger
     const response = await fetch('http://localhost:4000/cart', requestOptions);
@@ -40,12 +43,12 @@ const ItemDetails = () => {
     }
     setCartItem(data.itemInCart)
 
-    if (response.status == 200) {
-      setTimeout(() => {
-        cartHandler()
-      }, 3000);
-    }
-    window.location.reload(false)
+    // if (response.status == 200) {
+    //   setTimeout(() => {
+    //     cartHandler()
+    //   }, 3000);
+    // }
+    // window.location.reload(false)
   }
 
   return (
