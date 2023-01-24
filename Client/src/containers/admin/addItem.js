@@ -27,7 +27,6 @@ const AddItem = (props) => {
 
     const response = await fetch('http://localhost:4000/items', requestOptions);
     const data = await response.json()
-    props.fetchData()
 
     if (data) {
       alert(data.msg)
@@ -49,6 +48,7 @@ const AddItem = (props) => {
         onSubmit={(values, { resetForm }) => {
           orderItem(values)
           resetForm()
+          navigate('/')
         }}
       >
         {({ errors, touched, values, handleChange, handleBlur, handleSubmit }) => (

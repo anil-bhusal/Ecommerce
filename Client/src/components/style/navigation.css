@@ -23,12 +23,13 @@
 
 .navbar{
     box-shadow: 0px 5px 10px 0px #aaa;
-    position: fixed;
+    position: sticky;
     width: 100%;
     background: #fff;
     color: #000;
     opacity: 0.85;
     z-index: 100;
+    margin-bottom: 13px;
 }
 
 .navbar-container{
@@ -43,10 +44,16 @@
     display: flex;
 }
 .logo{
-    order: 1;
+    order: 0;
     font-size: 2.3rem;
 }
+.search{
+    order: 1;
+}
 
+.search input{
+    width: 380px;
+}
 .menu-items li{
     list-style: none;
     margin-left: 1.5rem;
@@ -67,6 +74,9 @@
 @media (max-width: 768px){
     .navbar{
         opacity: 0.95;
+    }
+    .search{
+        display: none;
     }
 
     .navbar-container input[type="checkbox"],

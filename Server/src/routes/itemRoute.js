@@ -32,6 +32,19 @@ app.get('/items', async (req, res) => {
         console.log(err)
     }
 })
+app.get('/items/:id', async (req, res) => {
+    try {
+        const data = await Items.find({_id: req.params.id})
+        if (data) {
+            res.json({
+                itemList: data
+            })
+        }
+
+    } catch (err) {
+        console.log(err)
+    }
+})
 
 app.put('/items', async (req, res) => {
     try {

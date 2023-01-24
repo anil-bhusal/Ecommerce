@@ -8,6 +8,8 @@ import AddItem from "../containers/admin/addItem"
 import { useDispatch, useSelector } from 'react-redux'
 import ItemList from "../containers/admin/itemList";
 import ChangePassword from "./changePassword";
+import ItemDetails from "../containers/user/ItemDetails";
+import CartDetails from "../containers/user/cartDetails";
 
 const ConditionalRouting = () => {
     const { userRole } = useSelector(state => state.user)
@@ -33,9 +35,9 @@ const UserScreen = () => {
     return (
         <Routes>
             <Route exact path='/' element={<UserDashboard/>} />
+            <Route exact path="/itemdetails" element={<ItemDetails/>} />
             <Route exact path="/changepassword" element={<ChangePassword/>} />
-            {/* <Route exact path='/orders' element={<Orders />} />
-      <Route exact path='/orderslist' element={<OrdersList />} /> */}
+            <Route exact path="/cartdetails" element={<CartDetails/>} />
         </Routes>
     )
 }

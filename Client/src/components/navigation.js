@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DownOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
-import '../components/style/adminNav.css'
+import '../components/style/navigation.css'
 import { useDispatch, useSelector } from "react-redux"
 import { setUserDetailsNull } from '../reducers/userSlice'
 import { useNavigate, Link } from 'react-router-dom';
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Image, Button, Drawer } from 'antd';
+import { Avatar, Image, Button, Drawer, message } from 'antd';
 import { MenuOutlined, ShoppingCartOutlined } from "@ant-design/icons"
-
+import io from 'socket.io-client';
+const socket = io(process.env.REACT_APP_BASE_URL);
 
 const Navigation = () => {
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [cartDetails, setCartDetails] = useState(false)
+
+    const [cartItem, setCartItem] = useState(0)
+
     const { fullName, userRole } = useSelector(state => state.user)
 
     const [open, setOpen] = useState(false);
@@ -47,12 +53,37 @@ const Navigation = () => {
         navigate("/");
     };
 
+    const itemInCart = async () => {
+        const response = await fetch(`http://localhost:4000/cart`)
+        const data = await response.json()
+        if (data.status === 200) {
+            setCartDetails(true)
+        }
+        if (data) {
+            setCartItem(data.itemInCart)
+        }
+    }
+
+    useEffect(() => {
+        itemInCart()
+    }, [])
+
+    useEffect(() => {
+        socket.on('cartValues', (cartValues) => {
+            debugger
+            if (cartValues) {
+                const bcupCartItem = cartItem + 1;
+                setCartItem(bcupCartItem)
+            }
+        })
+    }, [socket, cartItem])
+
     return (
         <>
             {userRole ?
                 <div>
                     {userRole === 'admin' ? (
-                        <nav class="navbar" >
+                        <nav class="navbar" id="navbar">
                             <div class="navbar-container container">
                                 <input type="checkbox" name="" id="" />
                                 <div class="hamburger-lines">
@@ -74,13 +105,13 @@ const Navigation = () => {
                                         <p><Link to="/">Dashboard</Link></p>
                                     </Drawer>
                                 </ul>
-                                <h1 class="logo">Amazon Lite</h1>
+                                <h1 class="logo"><Link to="/">Amazon Lite</Link></h1>
                             </div>
                         </nav>
                     ) : null}
-                    
+
                     {userRole === 'user' ? (
-                        <nav class="navbar">
+                        <nav class="navbar" id="navbar">
                             <div class="navbar-container container">
                                 <input type="checkbox" name="" id="" />
                                 <div class="hamburger-lines">
@@ -89,8 +120,8 @@ const Navigation = () => {
                                     <span class="line line3"></span>
                                 </div>
                                 <ul class="menu-items">
-                                <ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} />
-                                    &nbsp; &nbsp; &nbsp; &nbsp;
+                                    <span style={{ marginTop: '-6px', fontSize: '15px', color: 'red', fontWeight: 'bold' }}>{cartItem}</span>
+                                    <Link to="/cartdetails"><ShoppingCartOutlined style={{ fontWeight: 'bolder', fontSize: '30px', color: 'green' }} /></Link>                                    &nbsp; &nbsp; &nbsp; &nbsp;
                                     <Avatar style={{ backgroundColor: '#87d068', }} icon={<UserOutlined />} /> &nbsp;
                                     <Dropdown menu={{ items }}>
                                         <a onClick={(e) => e.preventDefault()}>
@@ -98,7 +129,11 @@ const Navigation = () => {
                                         </a>
                                     </Dropdown>
                                 </ul>
-                                <h1 class="logo">Amazon Lite</h1>
+
+                                <h1 class="logo"><Link to="/">Amazon Lite</Link></h1>
+                                <form className='search'>
+                                    <input type="search" placeholder='search' className='form-control'></input>
+                                </form>
                             </div>
                         </nav>
                     ) : null}
