@@ -64,6 +64,14 @@ const Navigation = () => {
         }
     }
 
+    const searchItems = async (value) => {
+        debugger
+        const response = await fetch(`${process.env.REACT_APP_BASE_URL}/items?q=${value}`);
+        const data = await response.json()
+        console.log("k 6 halkhabar", data.search)
+        debugger
+    }
+
     useEffect(() => {
         itemInCart()
     }, [])
@@ -132,7 +140,7 @@ const Navigation = () => {
 
                                 <h1 class="logo"><Link to="/">Amazon Lite</Link></h1>
                                 <form className='search'>
-                                    <input type="search" placeholder='search' className='form-control'></input>
+                                    <input type="search" placeholder='search' className='form-control' onKeyUp={(e) => { searchItems(e.target.value) }}></input>
                                 </form>
                             </div>
                         </nav>

@@ -20,13 +20,16 @@ app.post('/items', async (req, res) => {
     }
 })
 
+
 app.get('/items', async (req, res) => {
-    console.log("i am in dashboard page",req.headers.authorization)
+    console.log("i am in dashboard page", req.headers.authorization)
     try {
         const data = await Items.find()
+        const searchFind = await Items.find({name: req.query.q})
         if (data) {
             res.json({
-                itemList: data
+                itemList: data,
+                search: searchFind
             })
         }
 
@@ -36,7 +39,7 @@ app.get('/items', async (req, res) => {
 })
 
 app.get('/items/:id', async (req, res) => {
-    console.log("i am in item detail page",req.headers.authorization)
+    console.log("i am in item detail page", req.headers.authorization)
 
     try {
         const data = await Items.find({ _id: req.params.id })
