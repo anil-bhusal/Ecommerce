@@ -3,10 +3,14 @@ const Users = require('../models/users')
 const app = Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+var jwt = require('jsonwebtoken');
 
 app.post('/login', async (req, res) => {
     try {
         const data = await Users.findOne({ email: req.body.email })
+        //jwt
+        var token = jwt.sign({ email: req.body.email }, process.env.SECRET_KEY);
+
         if (data) {
             const dbPassword = data.password
             const isValidPassword = bcrypt.compareSync(req.body.password, dbPassword);
@@ -14,7 +18,8 @@ app.post('/login', async (req, res) => {
             if (isValidPassword) {
                 res.json({
                     msg: "login success",
-                    userDetails: refactoredData
+                    userDetails: refactoredData,
+                    token: token
                 })
             } else {
                 res.json({

@@ -10,10 +10,14 @@ const ItemDetails = () => {
   const [itemList, setItemList] = useState([])
   const [cartItem, setCartItem] = useState(0)
 
-  const { _id } = useSelector(state => state.item)
+  const { _id, token } = useSelector(state => state.item)
 
   const fetchData = async () => {
-    const response = await fetch(`http://localhost:4000/items/${_id}`)
+    const response = await fetch(`http://localhost:4000/items/${_id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
     const data = await response.json()
 
     if (data) {
@@ -29,7 +33,7 @@ const ItemDetails = () => {
 
   const addToCart = async (cartValues) => {
     console.log(cartValues)
-   
+
     socket.emit('requestCart', cartValues)
     debugger
     const requestOptions = {
@@ -40,7 +44,7 @@ const ItemDetails = () => {
     debugger
     const response = await fetch('http://localhost:4000/cart', requestOptions);
     const data = await response.json()
-    if(data){
+    if (data) {
       message.success(data.msg)
     }
     setCartItem(data.itemInCart)
@@ -52,7 +56,7 @@ const ItemDetails = () => {
         <div className='container'>
           <div className='orderList'>
             {itemList.length > 0 ? itemList.map((item, id) => {
-              const {_id, ...data} = item
+              const { _id, ...data } = item
               return (
                 <div class="card" style={{ width: '25rem', marginBottom: '10px', padding: '20px', backgroundColor: 'aliceblue' }}>
                   <div class="card-body" style={{ marginLeft: '40px' }}>

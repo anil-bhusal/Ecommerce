@@ -12,15 +12,17 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserDetails: (state, actions) => {
-      const { fullName, email, userRole } = actions.payload
+      const { fullName, email, userRole, token } = actions.payload
       state.fullName = fullName
       state.email = email
       state.userRole = userRole
+      state.token = token
     },
     setUserDetailsNull: (state, actions) => {
       state.fullName = ''
       state.email = ''
       state.userRole = ''
+      state.token = ''
     }
   }
 });

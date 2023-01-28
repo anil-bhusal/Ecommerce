@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch, useSelector } from 'react-redux'
 import {setUserDetails}  from "../../reducers/userSlice"
+import { message } from 'antd';
 
 const loginSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('Required'),
@@ -16,7 +17,6 @@ const Login = () => {
     const dispatch = useDispatch()
 
     const {fullName, userRole} = useSelector(state => state.user)
-    const [message, setMessage] = useState('')
 
     const loginUser = async (values, resetForm) => {
         const requestOptions = {
@@ -29,10 +29,11 @@ const Login = () => {
         const data = await response.json()
 
         if (data.msg) {
-            alert('login success')
+            data.userDetails.token = data.token
             dispatch(setUserDetails(data.userDetails))
+            message.success(data.msg)
         }else{
-            setMessage(data.errMsg)
+            message.error(data.errMsg)
         }
     }
 
@@ -60,7 +61,6 @@ const Login = () => {
                             {errors.password && touched.password ? <div className="error">{errors.password}</div> : null}
 
                             <button className='btn btn-success' type="submit">Login</button>
-                            <p style={{color:'red'}}>{message} </p>
                             <p style={{ marginTop: '10px' }}>Dont have an account? <Link to="/register">Signup</Link> here</p>
                         </Form>
                     </div>

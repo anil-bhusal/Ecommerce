@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const Items = require('../models/items')
 const app = Router();
+const isAuthorized = require('../middleware/tokenAuthorize')
 
 app.post('/items', async (req, res) => {
     try {
@@ -20,6 +21,7 @@ app.post('/items', async (req, res) => {
 })
 
 app.get('/items', async (req, res) => {
+    console.log("i am in dashboard page",req.headers.authorization)
     try {
         const data = await Items.find()
         if (data) {
@@ -32,15 +34,17 @@ app.get('/items', async (req, res) => {
         console.log(err)
     }
 })
+
 app.get('/items/:id', async (req, res) => {
+    console.log("i am in item detail page",req.headers.authorization)
+
     try {
-        const data = await Items.find({_id: req.params.id})
+        const data = await Items.find({ _id: req.params.id })
         if (data) {
             res.json({
                 itemList: data
             })
         }
-
     } catch (err) {
         console.log(err)
     }
@@ -49,11 +53,11 @@ app.get('/items/:id', async (req, res) => {
 app.put('/items', async (req, res) => {
     try {
         const data = await Items.findByIdAndUpdate(req.body._id, req.body)
-        if(data){
+        if (data) {
             res.json({
                 msg: "Item updated successfully"
             })
-        }else{
+        } else {
             res.json({
                 errMsg: "something went wrong"
             })
@@ -67,11 +71,11 @@ app.put('/items', async (req, res) => {
 app.delete('/items', async (req, res) => {
     try {
         const data = await Items.findByIdAndRemove(req.body.id)
-        if(data){
+        if (data) {
             res.json({
                 msg: "deleted successfully"
             })
-        }else{
+        } else {
             res.json({
                 errMsg: "something went wrong"
             })
