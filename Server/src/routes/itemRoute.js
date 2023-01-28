@@ -20,7 +20,7 @@ app.post('/items', async (req, res) => {
     }
 })
 
-app.get('/items', isAuthorized, async (req, res) => {
+app.get('/items', async (req, res) => {
     console.log("i am in dashboard page",req.headers.authorization)
     try {
         const data = await Items.find()
@@ -35,7 +35,7 @@ app.get('/items', isAuthorized, async (req, res) => {
     }
 })
 
-app.get('/items/:id', isAuthorized, async (req, res) => {
+app.get('/items/:id', async (req, res) => {
     console.log("i am in item detail page",req.headers.authorization)
 
     try {
